@@ -1,0 +1,1667 @@
+zabbix_export:
+  version: '7.4'
+  template_groups:
+    - uuid: 7df96b18c230490a9a0a9e2307226338
+      name: Templates
+    - uuid: 0e60ac85bc3941e2a1d66a048ff164da
+      name: UPS
+  templates:
+    - uuid: 5a1ba076e53f416793d35691b8cc38b8
+      template: ZBX-EATON-PULSAR
+      name: ZBX-EATON-PULSAR
+      templates:
+        - name: 'Template Module ICMP Ping'
+      groups:
+        - name: Templates
+        - name: UPS
+      items:
+        - uuid: ff1be8b4c9a6480d9f436452ba20b86c
+          name: 'UPS Manufacturer'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.2.1.33.1.1.1.0
+          key: 1.3.6.1.2.1.33.1.1.1.0
+          delay: '60'
+          history: 90d
+          value_type: TEXT
+          inventory_link: VENDOR
+          tags:
+            - tag: Application
+              value: System
+        - uuid: dedf955b0c6d460a8531df36909892b5
+          name: 'UPS Model'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.2.1.33.1.1.2.0
+          key: 1.3.6.1.2.1.33.1.1.2.0
+          delay: '60'
+          history: 90d
+          value_type: TEXT
+          inventory_link: MODEL
+          tags:
+            - tag: Application
+              value: System
+        - uuid: 72f09d13565043a1a7381d4e0cd8f50d
+          name: 'UPS Contact'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.2.1.1.4.0
+          key: sysContact
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          inventory_link: CONTACT
+          tags:
+            - tag: Application
+              value: System
+        - uuid: e46440ed729b495aa647eca148ead94f
+          name: 'UPS Location'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.2.1.1.6.0
+          key: sysLocation
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          inventory_link: LOCATION
+          tags:
+            - tag: Application
+              value: System
+        - uuid: d9ebae79567b48fb8cea7fc5970ee49c
+          name: 'UPS Name'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.2.1.1.5.0
+          key: sysName
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          inventory_link: NAME
+          tags:
+            - tag: Application
+              value: System
+        - uuid: 1ce34865c0c14c85827e4a6af5c09214
+          name: 'Agent - Firmware Version'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.12.12.0
+          key: upsmgAgentFirmwareVersion
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: Agent
+        - uuid: 2ea4dd4c0930442591f0e52f1292930a
+          name: 'Agent - IP Address'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.12.1.0
+          key: upsmgAgentIpaddress
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: Agent
+        - uuid: 65aa009ece354c21a9ffd944b35c2a7b
+          name: 'Agent - MIB Version'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.12.11.0
+          key: upsmgAgentMibVersion
+          delay: '3600'
+          history: 90d
+          tags:
+            - tag: Application
+              value: Agent
+        - uuid: f776e0e17ac7440bb9ac853d930c374f
+          name: 'Agent - Type'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.12.6.0
+          key: upsmgAgentType
+          delay: '3600'
+          history: 90d
+          valuemap:
+            name: upsmgAgentType
+          tags:
+            - tag: Application
+              value: Agent
+        - uuid: cab876a1d9494cc7a80e6e857e1b5a76
+          name: 'Battery Status - Not Charging'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.15.0
+          key: upsmgBatteryChargerFault
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: 4d4e3a4a442b4ae78325a5f1dd051371
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryChargerFault)=1
+              name: 'Battery - Not charging ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: cc8bea5c1ba1473c81123d11ed52600c
+          name: 'Battery - Current'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.6.0
+          key: upsmgBatteryCurrent
+          delay: '60'
+          history: 90d
+          units: A
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: d9eb0e9bcee6489eb67ebcdb6853e044
+          name: 'Battery Status - Fault'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.9.0
+          key: upsmgBatteryFaultBattery
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: efab28962e50426baa3431b9e990dbfa
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryFaultBattery)=1
+              name: 'Battery FAULT ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: 6f593aa579794ce8b410a4e42a7f039e
+          name: 'Battery - Time until Fully Charged'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.8.0
+          key: upsmgBatteryFullRechargeTime
+          delay: '60'
+          history: 90d
+          units: s
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: 2a1a32f6bdc244248d24fb7c2b43ae7e
+          name: 'Battery - Capacity'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.2.0
+          key: upsmgBatteryLevel
+          delay: '60'
+          history: 90d
+          units: '%'
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: c240aea8ef954045858ca8c3b7ee9980
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryLevel)<50
+              name: 'Battery Level <50% ({ITEM.VALUE1})'
+              priority: WARNING
+        - uuid: 582787470da8482db19f9944341c2415
+          name: 'Battery Status - Low Battery'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.14.0
+          key: upsmgBatteryLowBattery
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: 3728ddac67434b5f8e3255714ab89c5a
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryLowBattery)=1
+              name: 'Battery Low ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: 6f71da3a6dd74332bda6f5d116da6733
+          name: 'Battery Status - Low Condition'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.16.0
+          key: upsmgBatteryLowCondition
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: e3e6f11eb8674f9d85c31492d8c1ca3a
+          name: 'Battery Status - Not Recharged'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.17.0
+          key: upsmgBatteryLowRecharge
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: 3e4abad7732c49b2923009de34db7696
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryLowRecharge)=1
+              name: 'Battery - Not Recharged ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: 0fe1ca9a955b459aa410b3cf3d568430
+          name: 'Battery Status - No Battery'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.10.0
+          key: upsmgBatteryNoBattery
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: c305d56acc5d4b9e86113e5abb612f67
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryNoBattery)=1
+              name: 'Battery - NO battery ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: 3107f27303b64062aa0c961eca27f54e
+          name: 'Battery Status - Not High Charge'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.13.0
+          key: upsmgBatteryNotHighCharge
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: 598529c891744459a4de92965498bde5
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryNotHighCharge)=1
+              name: 'Battery - Non High Charge ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: c5617de2056c40feb50360a32436593e
+          name: 'Battery - Restart Capacity'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.4.0
+          key: upsmgBatteryRechargeLevel
+          delay: '60'
+          history: 90d
+          units: '%'
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: f90e5522386a4f739bda1f2138488f2e
+          name: 'Battery - Time until Restart Charged'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.3.0
+          key: upsmgBatteryRechargeTime
+          delay: '60'
+          history: 90d
+          units: s
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: 0e10019b276748cea086e0344d10257c
+          name: 'Battery - Runtime'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.1.0
+          key: upsmgBatteryRemainingTime
+          delay: '60'
+          history: 90d
+          units: s
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: 8f2b0be9b8004725b2d9ebdd184b2dae
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryRemainingTime)<5m
+              name: 'Battery Runtime <5min ({ITEM.VALUE1})'
+              priority: DISASTER
+            - uuid: c3e3d343631140bd9b5eeba2bd957af4
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryRemainingTime)<15m
+              name: 'Battery Runtime <15min ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: ef7dec79390049528174e37daf67b777
+          name: 'Battery Status - Replacement Required'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.11.0
+          key: upsmgBatteryReplacement
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: 39aaa6c29da942fab2193dabd71c0d89
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryReplacement)=1
+              name: 'Battery Needs to be replaced ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: c7f61d8087fe4ab69e423c73444af3d2
+          name: 'Battery - Temperature'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.7.0
+          key: upsmgBatteryTemperature
+          delay: '60'
+          history: 90d
+          units: C
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: 9ec33e23a30a4f25890919d28e773846
+          name: 'Battery Status - Unavailable'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.12.0
+          key: upsmgBatteryUnavailableBattery
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Battery
+          triggers:
+            - uuid: 367e3e2d526e42aa939553ac87e082df
+              expression: last(/ZBX-EATON-PULSAR/upsmgBatteryUnavailableBattery)=1
+              name: 'Battery - Status Unavailable ({ITEM.VALUE1})'
+              priority: HIGH
+        - uuid: 28149964103e443f82fd6c24861884d8
+          name: 'Battery - Voltage'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.5.5.0
+          key: upsmgBatteryVoltage
+          delay: '60'
+          history: 90d
+          units: V
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: ac50846152b14ba0a3957e3a562a1a49
+          name: 'Config - Audible Alarm Enabled'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.19.0
+          key: upsmgConfigAlarmAudible
+          delay: '60'
+          history: 90d
+          value_type: FLOAT
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: a083b3b571e14cd095adaee4483d8d35
+          name: 'Config - Audible Alarm Delay'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.20.0
+          key: upsmgConfigAlarmTimeDelay
+          delay: '60'
+          history: 90d
+          units: s
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: bbcf87fe81c44878b9576b0b86856d7e
+          name: 'Config - Auto Restart Enabled'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.9.0
+          key: upsmgConfigAutoRestart
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgConfigAutoRestart
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 3f9dc0b18ab94182ad6af6ca1b5a0901
+          name: 'Config - Battery Installed'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.1.0
+          key: upsmgConfigBatteryInstalled
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 05529663aa514df997c217c923073ac6
+          name: 'Config - Bypass Type'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.18.0
+          key: upsmgConfigByPassType
+          delay: '60'
+          history: 90d
+          value_type: FLOAT
+          valuemap:
+            name: upsmgConfigByPassType
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 08649f7f154c4e2c8a217e45c60efb2d
+          name: 'Config - Alarm on Bypass'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.27.0
+          key: upsmgConfigEmergencyOnByPass
+          delay: '60'
+          history: 90d
+          value_type: FLOAT
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: f680a6838a0c4ebfa6c34c2b0c725d1e
+          name: 'Config - Alarm on Overload'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.28.0
+          key: upsmgConfigEmergencyOverload
+          delay: '60'
+          history: 90d
+          value_type: FLOAT
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 70af26acf5d945de9d4f3d45932a6a30
+          name: 'Config - Alarm on Battery Test Failure'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.26.0
+          key: upsmgConfigEmergencyTestFail
+          delay: '60'
+          history: 90d
+          value_type: FLOAT
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 380b1d0bd6ab4466bfaa89f31ef7fd5f
+          name: 'Config - High Voltage Transfer Point'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.14.0
+          key: upsmgConfigHighTransfer
+          delay: '60'
+          history: 90d
+          units: V
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: a3106007cecb4c509c5d1a47a8e63a96
+          name: 'Config - Low Battery Level'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.8.0
+          key: upsmgConfigLowBatteryLevel
+          delay: '60'
+          history: 90d
+          units: '%'
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 0523f255f75f41988020c8a222b339f0
+          name: 'Config - Low Battery Time'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.7.0
+          key: upsmgConfigLowBatteryTime
+          delay: '60'
+          history: 90d
+          units: s
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: ad7f6547f2b1495bb7190be3911ed464
+          name: 'Config - Low Voltage Transfer Point'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.13.0
+          key: upsmgConfigLowTransfer
+          delay: '60'
+          history: 90d
+          units: V
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 42d2d91065cd4808bc29a28e63691f61
+          name: 'Config - Maximum Recharge Time'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.5.0
+          key: upsmgConfigMaxRechargeTime
+          delay: '60'
+          history: 90d
+          units: s
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 2c0ca581c8634314bc26c9a3aaf58c69
+          name: 'Config - Minimum Recharge Level'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.5.0
+          key: upsmgConfigMinRechargeLevel
+          delay: '60'
+          history: 90d
+          units: '%'
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 18fbf78baac04d42a3b487427ef0fc63
+          name: 'Config - Nominal Battery Time'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.3.0
+          key: upsmgConfigNominalBatteryTime
+          delay: '60'
+          history: 90d
+          units: s
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 4c0014c1e753430ab5720d6623808c4d
+          name: 'Config - Nominal Battery Voltage'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.2.0
+          key: upsmgConfigNominalBatteryVoltage
+          delay: '60'
+          history: 90d
+          units: V
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 6b7fa9e3d2f84c95abd418bb663f4b86
+          name: 'Config - Nominal Output Frequency'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.17.0
+          key: upsmgConfigOutputNomFrequency
+          delay: '60'
+          history: 90d
+          units: Hz
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 69756a455e914513823f5725e1f541d0
+          name: 'Config - Nominal Output Current'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.16.0
+          key: upsmgConfigOutputNominalCurrent
+          delay: '60'
+          history: 90d
+          units: A
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: 641df707881c417ca8a59f724b9195af
+          name: 'Config - Nominal Output Voltage'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.15.0
+          key: upsmgConfigOutputNominalVoltage
+          delay: '60'
+          history: 90d
+          units: V
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: aa042b75e73b44d5a38928c9595031fc
+          name: 'Config - VA Rating'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.4.12.0
+          key: upsmgConfigVARating
+          delay: '60'
+          history: 90d
+          units: VA
+          tags:
+            - tag: Application
+              value: Config
+        - uuid: aab44ae301fc42418465f05d608c218a
+          name: 'Environment - Ambient Humidity'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.8.2.0
+          key: upsmgEnvironAmbientHumidity
+          delay: '30'
+          history: 90d
+          units: '%'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Environment
+        - uuid: ab7a5e511ec041c6b21bcc39d8e82731
+          name: 'Environment - Ambient Temperature'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.8.1.0
+          key: upsmgEnvironAmbientTemp
+          delay: '30'
+          history: 90d
+          units: C
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: Environment
+        - uuid: f8172c8ee1e04427877ebb171cfe7091
+          name: 'UPS Family Name'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.1.1.0
+          key: upsmgIdentFamilyName
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: System
+        - uuid: 47e8a0a20a8e4437bd3a1077d08b1c21
+          name: 'UPS FW Revision'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.1.4.0
+          key: upsmgIdentFirmwareVersion
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          inventory_link: SOFTWARE
+          tags:
+            - tag: Application
+              value: System
+        - uuid: 073d606b68e34dd7925526d2d2581f9c
+          name: 'UPS Install Date'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.1.6.0
+          key: upsmgIdentInstallationDate
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          inventory_link: DATE_HW_INSTALL
+          tags:
+            - tag: Application
+              value: System
+        - uuid: 4bc970a37313420798ce13cf9f09e31e
+          name: 'UPS HW Revision'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.1.3.0
+          key: upsmgIdentRevisionLevel
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          inventory_link: HARDWARE
+          tags:
+            - tag: Application
+              value: System
+        - uuid: 5b64293e6328492cbdcac563d4f3a365
+          name: 'UPS Serial Number'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.1.7.0
+          key: upsmgIdentSerialNumber
+          delay: '3600'
+          history: 90d
+          value_type: TEXT
+          inventory_link: SERIALNO_A
+          tags:
+            - tag: Application
+              value: System
+        - uuid: 9344442df81a40859f40ff355e7e9ba7
+          name: 'Input Status - Bad Voltage/Frequency'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.6.3.0
+          key: upsmgInputBadStatus
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Input
+          triggers:
+            - uuid: 2c62f75241024029bbd024b21ba44928
+              expression: last(/ZBX-EATON-PULSAR/upsmgInputBadStatus)=1
+              name: 'Input - Bad Voltage/Frequency {ITEM.VALUE1}'
+              priority: HIGH
+              dependencies:
+                - name: 'Input - Cause of Input Line Fail {ITEM.VALUE1}'
+                  expression: last(/ZBX-EATON-PULSAR/upsmgInputLineFailCause)>1
+        - uuid: 19109e8537e24e4e916261b8a2ec3ca2
+          name: 'Input Status - Line Fail Cause'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.6.4.0
+          key: upsmgInputLineFailCause
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgInputLineFailCause
+          tags:
+            - tag: Application
+              value: Input
+          triggers:
+            - uuid: 8abc00e0e6f8477fb6affca289ab2b62
+              expression: last(/ZBX-EATON-PULSAR/upsmgInputLineFailCause)>1
+              name: 'Input - Cause of Input Line Fail {ITEM.VALUE1}'
+              priority: DISASTER
+              dependencies:
+                - name: 'Output - Utility Off({ITEM.VALUE1})'
+                  expression: last(/ZBX-EATON-PULSAR/upsmgOutputUtilityOff)=1
+        - uuid: dc02e9adcb114c89917ed542c87907cc
+          name: 'Input - Number of Phases'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.6.1.0
+          key: upsmgInputPhaseNum
+          delay: '3600'
+          history: 90d
+          value_type: FLOAT
+          units: phases
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Input
+        - uuid: 655564dff8a34936bd0b271ea5296d04
+          name: 'Output Status - Inverter Off'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.9.0
+          key: upsmgOutputInverterOff
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: e5fb824435024c9b8d8c9fc5c8f0f79c
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputInverterOff)=1
+              name: 'Output - Inverter Off ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: 5807bc422c264389ac37f08cd068e5f4
+          name: 'Output Status - No Bypass Installed'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.6.0
+          key: upsmgOutputNoByPass
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: dfa58e0edf5d4c1aa484836117467afb
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputNoByPass)=1
+              name: 'Output - No Bypass Installed ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: 9c5c4549a9c14affbb3e43b7fb44b27c
+          name: 'Output Status - On Battery'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.3.0
+          key: upsmgOutputOnBattery
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: ddebbe636e0f4567bd8a05bf03bfdc82
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputOnBattery)=1
+              name: 'Output - On Battery ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: a10121ce1e6f4b149697ec3e5e33e847
+          name: 'Output Status - On Boost'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.8.0
+          key: upsmgOutputOnBoost
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: b66b3df67f0a4930b7b324b969d9e6c7
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputOnBoost)=1
+              name: 'Output - On Boost ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: 2831a4c8e6574fff9644330d5623e8db
+          name: 'Output Status - On Buck'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.12.0
+          key: upsmgOutputOnBuck
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: 918d55f5c92b4fdc90ee331d07dc2f1a
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputOnBuck)=1
+              name: 'Output - On Fader (on buck) ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: 34d92c2a13504d1cb46596fa95c9b961
+          name: 'Output Status - On Bypass'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.4.0
+          key: upsmgOutputOnByPass
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: afce5b79d19d42c78fbcfab3f45b6999
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputOnByPass)=1
+              name: 'Output - On Bypass ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: 289eb021603742459aff7ac6d47bd45a
+          name: 'Output Status - Overload'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.10.0
+          key: upsmgOutputOverLoad
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: 70c249a822aa482aa7d0c2c280387121
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputOverLoad)=1
+              name: 'Output - Over Load ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: a4204c4ed1a74d87ae424ed92397e965
+          name: 'Output Status - Over Temperature'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.11.0
+          key: upsmgOutputOverTemp
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: 3f8c91155f7841b8a01fda88ecad81e2
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputOverTemp)=1
+              name: 'Output - Over Temperature ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: 9916325a9f4349919f209806559a84ea
+          name: 'Output - Number of Phases'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.1.0
+          key: upsmgOutputPhaseNum
+          delay: '3600'
+          history: 90d
+          value_type: FLOAT
+          units: phases
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+        - uuid: 2e11bac614434a98976e4c75ef9548e1
+          name: 'Output Status - Bypass Unavailable'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.5.0
+          key: upsmgOutputUnavailableByPass
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: 433a63ebbdd343aba5e67ac88c6fcc80
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputUnavailableByPass)=1
+              name: 'Output - Bypass Unavailable ({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: 0d8ea1b3922c47c7b7c8b94ad5f7e33c
+          name: 'Output Status - Utility Off'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.7.7.0
+          key: upsmgOutputUtilityOff
+          delay: '60'
+          history: 90d
+          valuemap:
+            name: upsmgStatusYesNo
+          tags:
+            - tag: Application
+              value: Output
+          triggers:
+            - uuid: b658845108134b1d990220b791981f84
+              expression: last(/ZBX-EATON-PULSAR/upsmgOutputUtilityOff)=1
+              name: 'Output - Utility Off({ITEM.VALUE1})'
+              priority: AVERAGE
+        - uuid: e80f8604e3eb4f07923aad24552d7451
+          name: 'Battery - Test Schedule'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.10.1.0
+          key: upsmgTestBatterySchedule
+          delay: '60'
+          history: 90d
+          value_type: FLOAT
+          valuemap:
+            name: upsmgTestBatterySchedule
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: c6093cea5e2548828388c70a2eba815f
+          name: 'Battery - Last Test Result'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.10.3.0
+          key: upsmgTestDiagResult
+          delay: '60'
+          history: 90d
+          value_type: FLOAT
+          valuemap:
+            name: upsmgTestDiagResult
+          tags:
+            - tag: Application
+              value: Battery
+        - uuid: ea5bd3035e7b49aa926d1c7da21abaed
+          name: 'Battery - Last Calibration Date'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.705.1.10.5.0
+          key: upsmgTestLastCalibration
+          delay: '60'
+          history: 90d
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: Battery
+      discovery_rules:
+        - uuid: ca143441b36c4997afc59ff71f13b2e5
+          name: 'Input Table'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.705.1.6.2.1.1]'
+          key: mginputIndex
+          delay: '3600'
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: c3f055dee8d84c2cbacd41799191bfe4
+              name: 'Input - Phase $1 Current'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.6.2.1.6.{#SNMPINDEX}'
+              key: 'mginputCurrent[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: A
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Input
+            - uuid: 5d2444116e8b4bfd94500ec87e824970
+              name: 'Input - Phase $1 Frequency'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.6.2.1.3.{#SNMPINDEX}'
+              key: 'mginputFrequency[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: Hz
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Input
+            - uuid: 9f0d3c35915f4ee9b9f0314e9471b41d
+              name: 'Input - Phase $1 Maximum Voltage (1 minute)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.6.2.1.5.{#SNMPINDEX}'
+              key: 'mginputMaximumVoltage[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: V
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Input
+            - uuid: e85c8bd294204533a0bbff750e41b630
+              name: 'Input - Phase $1 Minimum Voltage (1 minute)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.6.2.1.4.{#SNMPINDEX}'
+              key: 'mginputMinimumVoltage[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: V
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Input
+            - uuid: 4ec9ad11b64149d0bf2c87e814c9d2f6
+              name: 'Input - Phase $1 Voltage'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.6.2.1.2.{#SNMPINDEX}'
+              key: 'mginputVoltage[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: V
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Input
+              trigger_prototypes:
+                - uuid: bd4fc0ea39fa4ff98e65908af5828b9b
+                  expression: 'last(/ZBX-EATON-PULSAR/mginputVoltage[{#SNMPINDEX}])<177 or last(/ZBX-EATON-PULSAR/mginputVoltage[{#SNMPINDEX}])>250'
+                  name: 'Input - Phase {#SNMPINDEX} Voltage not in limits 177-250 V ({ITEM.VALUE1})'
+                  priority: DISASTER
+          graph_prototypes:
+            - uuid: 43ea9a89b12747b8a78a909dea5f1d31
+              name: 'Input - Phase {#SNMPINDEX} Current'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'mginputCurrent[{#SNMPINDEX}]'
+            - uuid: 24d6265f0af14ea481981b7093680167
+              name: 'Input - Phase {#SNMPINDEX} Frequency'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'mginputFrequency[{#SNMPINDEX}]'
+            - uuid: 5b5b7ed171594704ac783bdb71d9abdc
+              name: 'Input - Phase {#SNMPINDEX} Voltage'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'mginputVoltage[{#SNMPINDEX}]'
+        - uuid: e3ffc95737b045d9afcb7f8a3be02ea6
+          name: 'Output Table'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.705.1.7.2.1.1]'
+          key: mgoutputPhaseIndex
+          delay: '3600'
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: 2baea495732c4e168d2d027f183bcfc0
+              name: 'Output - Phase $1 Current'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.7.2.1.5.{#SNMPINDEX}'
+              key: 'mgoutputCurrent[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: A
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Output
+            - uuid: 4d23daaed48645f7916228a89b458db8
+              name: 'Output - Phase $1 Frequency'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.7.2.1.3.{#SNMPINDEX}'
+              key: 'mgoutputFrequency[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: Hz
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Output
+            - uuid: 4b867b40f37940608b13f32606e304cf
+              name: 'Output - Phase $1 Load'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.7.2.1.4.{#SNMPINDEX}'
+              key: 'mgoutputLoadPerPhase[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: Output
+            - uuid: cdacce67eb7044e09192e71869ef6bf9
+              name: 'Output - Phase $1 Voltage'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.7.2.1.2.{#SNMPINDEX}'
+              key: 'mgoutputVoltage[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: V
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Output
+          graph_prototypes:
+            - uuid: ba0144b3d7bd46dd89e40e25fbeec70d
+              name: 'Output - Phase {#SNMPINDEX} Current'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'mgoutputCurrent[{#SNMPINDEX}]'
+            - uuid: 1e6f294f691643b2871353dd7014b0e4
+              name: 'Output - Phase {#SNMPINDEX} Frequency'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'mgoutputFrequency[{#SNMPINDEX}]'
+            - uuid: 9c75771555fb453abccf624f4ea0fea2
+              name: 'Output - Phase {#SNMPINDEX} Load'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'mgoutputLoadPerPhase[{#SNMPINDEX}]'
+            - uuid: 7a95dcbaeb5142359cc1b4c6e95323c9
+              name: 'Output - Phase {#SNMPINDEX} Voltage'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'mgoutputVoltage[{#SNMPINDEX}]'
+        - uuid: 504366b35e9a49c5a676b9f3fadb336d
+          name: 'Receptacles Table'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.705.1.3.2.1.1]'
+          key: mgreceptacleIndex
+          delay: '3600'
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: 454cb2ec7c8f48569a5410799ab4d794
+              name: 'Receptacle $1 Identification'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.3.2.1.4.{#SNMPINDEX}'
+              key: 'mgreceptacleIdent[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Receptacle
+            - uuid: 9b5ae1e5cc50469a92f862b4139f2223
+              name: 'Receptacle $1 State'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.3.2.1.5.{#SNMPINDEX}'
+              key: 'mgreceptacleState[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              valuemap:
+                name: mgreceptacleState
+              tags:
+                - tag: Application
+                  value: Receptacle
+            - uuid: f640550f2a15459081f2896f922a78ba
+              name: 'Receptacle $1 Description'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.3.2.1.3.{#SNMPINDEX}'
+              key: 'mgreceptacleType[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Receptacle
+        - uuid: a8b3ea151aa34fe2a2ff5e8ddb00801d
+          name: 'Config - Environmental Sensors Table'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.705.1.4.34.1.2.1]'
+          key: upsmgConfigSensorIndex
+          delay: '3600'
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: 6d4f8f09c2fd46998170b9b97cc40c25
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] High Humidity Limit'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.7.{#SNMPINDEX}'
+              key: 'upsmgConfigHumidityHigh[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: 239327166b07477fbff8976c2559a8ac
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Humidity Hysteresis'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.8.{#SNMPINDEX}'
+              key: 'upsmgConfigHumidityHysteresis[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: b9189408e22749b796cd6b03abd33ed4
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Low Humidity Limit'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.6.{#SNMPINDEX}'
+              key: 'upsmgConfigHumidityLow[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: e8da2b221ee942f2837b5a6dfa18b4cc
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Input #1 Closed Label'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.10.{#SNMPINDEX}'
+              key: 'upsmgConfigInput1ClosedLabel[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: d8990d7583d141f7bbdabfe7e186031a
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Input #1 Name'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.9.{#SNMPINDEX}'
+              key: 'upsmgConfigInput1Name[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: 78616a1d132245038516df3a34d4f7ef
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Input #1 Open Label'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.11.{#SNMPINDEX}'
+              key: 'upsmgConfigInput1OpenLabel[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: 2f92b73fb09c4513bfcb1208fefc1fc2
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Input #2 Closed Label'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.13.{#SNMPINDEX}'
+              key: 'upsmgConfigInput2ClosedLabel[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: 89f851259d164023839314650a9e090d
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Input #2 Name'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.12.{#SNMPINDEX}'
+              key: 'upsmgConfigInput2Name[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: 00fdf91fc2eb4bcfacc1f436bddd6213
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Input #2 Open Label'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.14.{#SNMPINDEX}'
+              key: 'upsmgConfigInput2OpenLabel[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: 6fa07cf127e740798cd12a3fa286768d
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Name'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.2.{#SNMPINDEX}'
+              key: 'upsmgConfigSensorName[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: dda29f9be93e431b955c62fb9bc05a48
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] High Temperature Limit'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.4.{#SNMPINDEX}'
+              key: 'upsmgConfigTemperatureHigh[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              units: C
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: 005ef22d1bbd4ca8b3299b89c42e0a05
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Temperature Hysteresis'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.5.{#SNMPINDEX}'
+              key: 'upsmgConfigTemperatureHysteresis[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              units: C
+              tags:
+                - tag: Application
+                  value: Config
+            - uuid: f8dca101a2614bcbaa7b775362382eb6
+              name: 'Config - Environment Sensor [{#SNMPINDEX}] Low Temperature Limit'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.4.34.1.3.{#SNMPINDEX}'
+              key: 'upsmgConfigTemperatureLow[{#SNMPINDEX}]'
+              delay: '30'
+              history: 90d
+              units: C
+              tags:
+                - tag: Application
+                  value: Config
+        - uuid: a50672aadb654940ba58340d762a7bb6
+          name: 'Environment Table'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.705.1.8.7.1.1]'
+          key: upsmgEnvironmentIndex
+          delay: '3600'
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: 60444f3786ff495bbde970d0022bb2c0
+              name: 'Environment - Sensor $1 Comms Failure'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.8.7.1.2.{#SNMPINDEX}'
+              key: 'upsmgEnvironmentComFailure[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              value_type: FLOAT
+              valuemap:
+                name: upsmgStatusYesNo
+              tags:
+                - tag: Application
+                  value: Environment
+            - uuid: add85bbd586c4ebfa3290e7812a54f9e
+              name: 'Environment - Sensor $1 Humidity is High'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.8.7.1.8.{#SNMPINDEX}'
+              key: 'upsmgEnvironmentHumidityHigh[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              value_type: FLOAT
+              valuemap:
+                name: upsmgStatusYesNo
+              tags:
+                - tag: Application
+                  value: Environment
+              trigger_prototypes:
+                - uuid: 1a641bb8440748f9b1f75d4138f52093
+                  expression: 'last(/ZBX-EATON-PULSAR/upsmgEnvironmentHumidityHigh[{#SNMPINDEX}])=1'
+                  name: 'Environment - Humidity is High ({ITEM.VALUE1})'
+                  priority: AVERAGE
+            - uuid: 2b17e841a19a4e419c5c943f89ea321e
+              name: 'Environment - Sensor $1 Humidity is Low'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.8.7.1.7.{#SNMPINDEX}'
+              key: 'upsmgEnvironmentHumidityLow[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              value_type: FLOAT
+              valuemap:
+                name: upsmgStatusYesNo
+              tags:
+                - tag: Application
+                  value: Environment
+              trigger_prototypes:
+                - uuid: 0c3b12808dc146ea8cc656c952e0290b
+                  expression: 'last(/ZBX-EATON-PULSAR/upsmgEnvironmentHumidityLow[{#SNMPINDEX}])=1'
+                  name: 'Environment - Humidity is Low ({ITEM.VALUE1})'
+                  priority: AVERAGE
+            - uuid: e46ffaecebe74bf9b2cff38277489431
+              name: 'Environment - Sensor $1 Humidity'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.8.7.1.6.{#SNMPINDEX}'
+              key: 'upsmgEnvironmentHumidity[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: '%'
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Environment
+            - uuid: b6d3ea9126e54a93ba0d248283963662
+              name: 'Environment - Sensor $1 Temperature is High'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.8.7.1.5.{#SNMPINDEX}'
+              key: 'upsmgEnvironmentTemperatureHigh[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              value_type: FLOAT
+              valuemap:
+                name: upsmgStatusYesNo
+              tags:
+                - tag: Application
+                  value: Environment
+              trigger_prototypes:
+                - uuid: c751b76f283842f9a0bd55b977f0281a
+                  expression: 'last(/ZBX-EATON-PULSAR/upsmgEnvironmentTemperatureHigh[{#SNMPINDEX}])=1'
+                  name: 'Environment - Temperature is High ({ITEM.VALUE1})'
+                  priority: AVERAGE
+            - uuid: e045c5d39b7342c69dcde728089dca1a
+              name: 'Environment - Sensor $1 Temperature is Low'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.8.7.1.4.{#SNMPINDEX}'
+              key: 'upsmgEnvironmentTemperatureLow[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              value_type: FLOAT
+              valuemap:
+                name: upsmgStatusYesNo
+              tags:
+                - tag: Application
+                  value: Environment
+              trigger_prototypes:
+                - uuid: ca68e34437ba42cf89cb6bb9a800a36c
+                  expression: 'last(/ZBX-EATON-PULSAR/upsmgEnvironmentTemperatureLow[{#SNMPINDEX}])=1'
+                  name: 'Environment - Temperature is Low ({ITEM.VALUE1})'
+                  priority: AVERAGE
+            - uuid: 83f5f8299d9647afb07a4a15df0e5a1c
+              name: 'Environment - Sensor $1 Temperature'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.705.1.8.7.1.3.{#SNMPINDEX}'
+              key: 'upsmgEnvironmentTemperature[{#SNMPINDEX}]'
+              delay: '60'
+              history: 90d
+              units: C
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: Environment
+          graph_prototypes:
+            - uuid: ddb127ac9d0b4b02950dbfeeede7d381
+              name: 'Environment - Sensor {#SNMPINDEX} Humidity'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'upsmgEnvironmentHumidity[{#SNMPINDEX}]'
+            - uuid: d788751205084641bf4b6c0b1f86995c
+              name: 'Environment - Sensor {#SNMPINDEX} Temperature'
+              graph_items:
+                - color: 00C800
+                  item:
+                    host: ZBX-EATON-PULSAR
+                    key: 'upsmgEnvironmentTemperature[{#SNMPINDEX}]'
+      valuemaps:
+        - uuid: 03f26ba9b15b4b309104d3c60de31c72
+          name: mgreceptacleState
+          mappings:
+            - value: '1'
+              newvalue: manualON
+            - value: '2'
+              newvalue: manualOFF
+            - value: '3'
+              newvalue: normalON
+            - value: '4'
+              newvalue: normalOFF
+            - value: '5'
+              newvalue: controlON
+            - value: '6'
+              newvalue: controlOFF
+            - value: '7'
+              newvalue: scheduleON
+            - value: '8'
+              newvalue: scheduleOFF
+        - uuid: 2295a070d0a141b3a10df6bea8231180
+          name: upsmgAgentType
+          mappings:
+            - value: '1'
+              newvalue: deviceEth
+            - value: '2'
+              newvalue: deviceTR
+            - value: '3'
+              newvalue: proxyEth
+            - value: '4'
+              newvalue: proxyTR
+            - newvalue: other
+        - uuid: 43ec822125c540b4b3b333972ed137f1
+          name: upsmgConfigAutoRestart
+          mappings:
+            - value: '1'
+              newvalue: Always
+            - value: '2'
+              newvalue: Never
+            - value: '3'
+              newvalue: onMains
+        - uuid: bdc736226cfa45d89dbe6157d3ec46ff
+          name: upsmgConfigByPassType
+          mappings:
+            - value: '1'
+              newvalue: None
+            - value: '2'
+              newvalue: Relay
+            - value: '3'
+              newvalue: Static
+        - uuid: 4f7224dc5ad34aadbf0a9d4f0ec1cfe4
+          name: upsmgInputLineFailCause
+          mappings:
+            - value: '1'
+              newvalue: None
+            - value: '2'
+              newvalue: outOfVoltageTolerance
+            - value: '3'
+              newvalue: outOfFrequencyTolerance
+            - value: '4'
+              newvalue: utilityOff
+        - uuid: 15ab30b53426436a858b4ec5ee7e916b
+          name: upsmgStatusYesNo
+          mappings:
+            - value: '1'
+              newvalue: 'Yes'
+            - value: '2'
+              newvalue: 'No'
+        - uuid: c51182b395e648518a43e5ade1680701
+          name: upsmgTestBatterySchedule
+          mappings:
+            - value: '1'
+              newvalue: Unknown
+            - value: '2'
+              newvalue: Weekly
+            - value: '3'
+              newvalue: Monthly
+            - value: '4'
+              newvalue: atTurnOn
+            - value: '5'
+              newvalue: None
+            - value: '6'
+              newvalue: Daily
+        - uuid: 78182e8275fe416d93477c7784a6e763
+          name: upsmgTestDiagResult
+          mappings:
+            - value: '1'
+              newvalue: Success
+            - value: '2'
+              newvalue: Failed
+            - value: '3'
+              newvalue: None
+  graphs:
+    - uuid: df83c83a3c9b4e71af0b0946a1db070d
+      name: 'Battery - Capacity/Runtime'
+      graph_items:
+        - color: C80000
+          item:
+            host: ZBX-EATON-PULSAR
+            key: upsmgBatteryLevel
+        - sortorder: '1'
+          color: 00C800
+          yaxisside: RIGHT
+          item:
+            host: ZBX-EATON-PULSAR
+            key: upsmgBatteryRemainingTime
+    - uuid: 5e11d3d2a594431ba1a2c0e475677a22
+      name: 'Battery - Current/Voltage'
+      graph_items:
+        - color: 00C800
+          item:
+            host: ZBX-EATON-PULSAR
+            key: upsmgBatteryCurrent
+        - sortorder: '1'
+          color: C80000
+          yaxisside: RIGHT
+          item:
+            host: ZBX-EATON-PULSAR
+            key: upsmgBatteryVoltage
+    - uuid: e904c855b2ec4591af59b184ad8172ad
+      name: 'Environment - Ambient Temperature/Humidity'
+      graph_items:
+        - color: C80000
+          item:
+            host: ZBX-EATON-PULSAR
+            key: upsmgEnvironAmbientTemp
+        - sortorder: '1'
+          color: 00C800
+          yaxisside: RIGHT
+          item:
+            host: ZBX-EATON-PULSAR
+            key: upsmgEnvironAmbientHumidity
