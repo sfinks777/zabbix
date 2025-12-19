@@ -154,8 +154,23 @@ Installation
   * 1 ⇒ success
   * 2 ⇒ failed
   * 3 ⇒ none
-7. Add to your host the **{$SNMP_COMMUNITY}** macro with your SNMP community as value.
-8. Associate **ZBX-EATON-PULSAR** template to the host.
+7. Add a value mapping named `upsmgAgentType` with the following values:
+  * 1 ⇒ deviceEth
+  * 2 ⇒ deviceTR
+  * 3 ⇒ proxyEth
+  * 4 ⇒ proxyTR
+  * 5 ⇒ other
+8. Add a value mapping named `mgreceptacleState` with the following values:
+  * 1 ⇒ manualON
+  * 2 ⇒ manualOFF
+  * 3 ⇒ normalON
+  * 4 ⇒ normalOFF
+  * 5 ⇒ controlON
+  * 6 ⇒ controlOFF
+  * 7 ⇒ scheduleON
+  * 8 ⇒ scheduleOFF
+9. Add to your host the **{$SNMP_COMMUNITY}** macro with your SNMP community as value.
+10. Associate **ZBX-EATON-PULSAR** template to the host.
 
 Requirements
 ------------
